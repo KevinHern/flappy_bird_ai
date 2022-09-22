@@ -20,9 +20,11 @@ class Bird:
     def __init__(
             self,
             starting_position,
-            max_height
+            max_height,
+            total_pipes
     ):
         # Position Vectors
+        self.starting_position = starting_position
         self.position = starting_position
 
         self.max_height = max_height
@@ -43,6 +45,8 @@ class Bird:
         self.distance = 0
         self.pipes_passed = 0
 
+        self.total_pipes = total_pipes
+
     def flap(self):
         self.velocity = self.flap_velocity
 
@@ -50,12 +54,12 @@ class Bird:
         # Get points
         points = np.array([
             # X points
-            [dual_pipe.top_pipe.position[0] - self.bird_diameter/2,
-             dual_pipe.top_pipe.position[0] + dual_pipe.top_pipe.width + self.bird_diameter/2],
+            [dual_pipe.top_pipe.position[0] - self.bird_diameter / 2,
+             dual_pipe.top_pipe.position[0] + dual_pipe.top_pipe.width + self.bird_diameter / 2],
             # Top Pipe Y Height
-            [dual_pipe.top_pipe.position[1] + dual_pipe.top_pipe.height + self.bird_diameter/2],
+            [dual_pipe.top_pipe.position[1] + dual_pipe.top_pipe.height + self.bird_diameter / 2],
             # Bottom Pipe Y Height
-            [dual_pipe.bottom_pipe.position[1] - self.bird_diameter/2],
+            [dual_pipe.bottom_pipe.position[1] - self.bird_diameter / 2],
         ])
 
         # Check collision Top Pipe
@@ -67,15 +71,13 @@ class Bird:
         if passed_pipe and not self.game_over:
             self.pipes_passed += 1
             print("Distance: {}\nPipe Score: {}".format(self.distance, self.pipes_passed))
+            self.game_over = self.pipes_passed == self.total_pipes
 
     def draw(self, track):
         # Check closest pipe first
         closest_pipe = get_closest_pipe(track=track)
 
-        if closest_pipe is None:
-            # Game is over
-            self.game_over = True
-        else:
+        if closest_pipe is not None:
             # Proceed normally
             # Calculate new velocity
             self.velocity = np.add(self.velocity, Bird.GRAVITY)
@@ -93,3 +95,16 @@ class Bird:
 
             # Increase distance score
             self.distance += 1
+
+    def reset(self):
+        # Resetting vectors
+        self.position = self.starting_position
+        self.velocity = np.empty(2)
+        self.velocity.fill(0)
+
+        # Resetting score variables
+        self.distance = 0
+        self.pipes_passed = 0
+
+        # Setting flags back to normal
+        self.game_over = False

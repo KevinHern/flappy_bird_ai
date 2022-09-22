@@ -28,6 +28,19 @@ class PipeTrack:
         self.pipe_0_threshold = bird_x - pipe_width - bird_diameter / 2
 
         # Creating random raw Pipe track
+        self.create_random_track()
+
+        # Lazy Loading
+        self.number_pipes_to_display = self.max_width // self.pipe_distance
+        self.pipes_queue = np.array([self.pipes_track[0]])
+        self.next_pipe_counter = self.pipe_distance
+        self.next_pipe = 1
+
+        # Setting flags
+        self.track_complete = False
+
+    def create_random_track(self):
+        # Creating random raw Pipe track
         dual_pipes = []
         for pipe in range(self.number_pipes):
             # Both pipes start at the edge of the screen
@@ -55,15 +68,6 @@ class PipeTrack:
             dual_pipes.append(dual_pipe)
 
         self.pipes_track = np.array(dual_pipes)
-
-        # Lazy Loading
-        self.number_pipes_to_display = self.max_width // self.pipe_distance
-        self.pipes_queue = np.array([self.pipes_track[0]])
-        self.next_pipe_counter = self.pipe_distance
-        self.next_pipe = 1
-
-        # Setting flags
-        self.track_complete = False
 
     def add_pipe_to_queue(self):
         # Obtain new pipe and add it to queue
@@ -102,3 +106,15 @@ class PipeTrack:
             dual_pipe.draw(pipe_velocity=self.pipe_velocity)
 
         return passed_pipe
+
+    def reset(self):
+        # Creating track again
+        self.create_random_track()
+
+        # Reset Lazy loading
+        self.pipes_queue = np.array([self.pipes_track[0]])
+        self.next_pipe_counter = self.pipe_distance
+        self.next_pipe = 1
+
+        # Setting flags
+        self.track_complete = False
