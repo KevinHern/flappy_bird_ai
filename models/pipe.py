@@ -25,7 +25,10 @@ class Pipe:
 
 
 class DualPipe:
-    def __init__(self, starting_top_pipe, starting_bottom_pipe, pipes_width, pipes_height):
+    def __init__(self, id, starting_top_pipe, starting_bottom_pipe, pipes_width, pipes_height):
+        # Setting up ID
+        self.id = id
+
         # Initializing pipes
         self.top_pipe = Pipe(
             starting_x=starting_top_pipe[0],

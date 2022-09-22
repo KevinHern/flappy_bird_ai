@@ -8,7 +8,13 @@ from random import uniform
 
 
 class PipeTrack:
-    def __init__(self, pipe_distance, pipe_velocity, number_pipes, max_width, max_height, pipe_width):
+    def __init__(
+            self,
+            pipe_distance, pipe_velocity, number_pipes,
+            max_width, max_height,
+            pipe_width,
+            bird_diameter, bird_x
+    ):
         # Initializing constants
         self.pipe_width = pipe_width
         self.pipe_distance = pipe_distance + pipe_width
@@ -18,6 +24,8 @@ class PipeTrack:
 
         self.max_width = max_width
         self.max_height = max_height
+
+        self.pipe_0_threshold = bird_x - pipe_width - bird_diameter / 2
 
         # Creating random raw Pipe track
         dual_pipes = []
@@ -36,6 +44,7 @@ class PipeTrack:
 
             # Creating Dual Pipe
             dual_pipe = DualPipe(
+                id=pipe,
                 starting_top_pipe=starting_top_pipe,
                 starting_bottom_pipe=starting_bottom_pipe,
                 pipes_width=self.pipe_width,
@@ -55,7 +64,6 @@ class PipeTrack:
 
         # Setting flags
         self.track_complete = False
-        self.game_over = False
 
     def add_pipe_to_queue(self):
         # Obtain new pipe and add it to queue
@@ -68,6 +76,7 @@ class PipeTrack:
         self.track_complete = self.next_pipe == self.number_pipes
 
     def draw(self):
+
         # Translate pipes first
         map(lambda pipes: pipes.translate(pipe_velocity=self.pipe_velocity), self.pipes_track)
 
@@ -82,11 +91,14 @@ class PipeTrack:
             self.next_pipe_counter = self.pipe_distance
 
         # Check first pipe's x position
-        if len(self.pipes_queue) > 0 > self.pipes_queue[0].top_pipe.position[0]:
+        passed_pipe = False
+        if len(self.pipes_queue) > 0 and self.pipes_queue[0].top_pipe.position[0] <= self.pipe_0_threshold:
             # Pop first dual pipe
             self.pipes_queue = self.pipes_queue[1:]
+            passed_pipe = True
 
         # Draw pipes
         for dual_pipe in self.pipes_queue:
             dual_pipe.draw(pipe_velocity=self.pipe_velocity)
 
+        return passed_pipe

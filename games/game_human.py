@@ -35,11 +35,13 @@ track = PipeTrack(
     number_pipes=number_pipes,
     max_width=width,
     max_height=height,
-    pipe_width=50
+    pipe_width=50,
+    bird_diameter=bird.bird_diameter,
+    bird_x=bird_starting_position[0]
 )
 
 # Initializing game variables and constants
-game_over = False
+track_complete = False
 
 
 def setup():
@@ -51,21 +53,28 @@ def draw():
     background(0)
 
     # Draw Pipes
-    track.draw()
+    passed_pipe = track.draw()
 
     # Draw Bird
-    bird.draw()
+    bird.draw(track=track)
+
+    # Increase Bird score
+    bird.increase_pipe_score(passed_pipe=passed_pipe)
+
+    if bird.game_over or track.track_complete:
+        no_loop()
+        print("Game Over")
 
 
 def key_pressed():
-    if ord(str(key)) > 0:
+    if ord(str(key)) > 0 and not bird.game_over:
         bird.flap()
     else:
         pass
 
 
 def mouse_pressed():
-    redraw()
+    loop()
 
 
 if __name__ == '__main__':
