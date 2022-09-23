@@ -78,7 +78,7 @@ class Bird:
             self.closest_pipe = closest_pipe
             self.game_over = self.pipes_passed == self.total_pipes
 
-    def draw(self):
+    def update(self):
         if self.closest_pipe is not None:
             # Proceed normally
             # Calculate new velocity
@@ -94,11 +94,12 @@ class Bird:
             # Check Collisions
             self.check_collision()
 
-            # Draw
-            circle(self.position[0], self.position[1], self.bird_diameter)
-
             # Increase distance score
             self.distance += 1
+
+    def draw(self):
+        # Draw
+        circle(self.position[0], self.position[1], self.bird_diameter)
 
     def reset(self, closest_pipe):
         # Resetting vectors
