@@ -39,6 +39,7 @@ class Bird:
 
         # Bird constants
         self.bird_diameter = bird_diameter
+        self.bird_radius = bird_diameter / 2
         self.closest_pipe = closest_pipe
 
         # Flags
@@ -57,12 +58,12 @@ class Bird:
         # Get points
         points = np.array([
             # X points
-            [self.closest_pipe.top_pipe.position[0] - self.bird_diameter / 2,
-             self.closest_pipe.top_pipe.position[0] + self.closest_pipe.top_pipe.width + self.bird_diameter / 2],
+            [self.closest_pipe.top_pipe.position[0] - self.bird_radius,
+             self.closest_pipe.top_pipe.position[0] + self.closest_pipe.top_pipe.width + self.bird_radius],
             # Top Pipe Y Height
-            [self.closest_pipe.top_pipe.position[1] + self.closest_pipe.top_pipe.height + self.bird_diameter / 2],
+            [self.closest_pipe.top_pipe.position[1] + self.closest_pipe.top_pipe.height + self.bird_radius],
             # Bottom Pipe Y Height
-            [self.closest_pipe.bottom_pipe.position[1] - self.bird_diameter / 2],
+            [self.closest_pipe.bottom_pipe.position[1] - self.bird_radius],
         ])
 
         # Check collision Top Pipe
@@ -87,6 +88,8 @@ class Bird:
             self.position = np.add(self.position, self.velocity)
             if self.position[1] > self.max_height:
                 self.position[1] = self.max_height
+            if self.position[1] < 0:
+                self.position[1] = 0
 
             # Check Collisions
             self.check_collision()
