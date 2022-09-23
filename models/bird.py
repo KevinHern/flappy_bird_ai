@@ -77,7 +77,7 @@ class Bird:
             self.closest_pipe = closest_pipe
             self.game_over = self.pipes_passed == self.total_pipes
 
-    def draw(self, track):
+    def draw(self):
         if self.closest_pipe is not None:
             # Proceed normally
             # Calculate new velocity

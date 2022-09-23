@@ -60,7 +60,7 @@ def draw():
     passed_pipe = track.draw()
 
     # Draw Bird
-    bird.draw(track=track)
+    bird.draw()
 
     # Increase Bird score
     bird.increase_pipe_score(passed_pipe=passed_pipe, closest_pipe=track.pipes_queue[0] if len(track.pipes_queue)>0 else None)
