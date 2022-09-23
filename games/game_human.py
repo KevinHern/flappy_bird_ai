@@ -60,6 +60,7 @@ def draw():
     passed_pipe = track.draw()
 
     # Draw Bird
+    bird.update()
     bird.draw()
 
     # Increase Bird score
