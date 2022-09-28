@@ -15,7 +15,7 @@ def get_closest_pipe(track):
 
 
 class Bird:
-    GRAVITY = np.array([0, 1])
+    GRAVITY = np.array([0, 0.25])
 
     def __init__(
             self,
@@ -35,7 +35,7 @@ class Bird:
         self.velocity = np.empty(2)
         self.velocity.fill(0)
 
-        self.flap_velocity = np.array([0, -10])
+        self.flap_velocity = np.array([0, -8])
 
         # Bird constants
         self.bird_diameter = bird_diameter
@@ -78,6 +78,9 @@ class Bird:
             self.closest_pipe = closest_pipe
             self.game_over = self.pipes_passed == self.total_pipes
 
+    def increase_score(self):
+        self.distance += 1
+
     def update(self):
         if self.closest_pipe is not None:
             # Proceed normally
@@ -86,7 +89,9 @@ class Bird:
 
             # Calculate new position
             self.position = np.add(self.position, self.velocity)
+
             if self.position[1] > self.max_height:
+                self.game_over = True
                 self.position[1] = self.max_height
             if self.position[1] < 0:
                 self.position[1] = 0
@@ -95,7 +100,7 @@ class Bird:
             self.check_collision()
 
             # Increase distance score
-            self.distance += 1
+            self.increase_score()
 
     def draw(self):
         # Draw
