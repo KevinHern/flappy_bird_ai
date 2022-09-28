@@ -50,13 +50,14 @@ track_complete = False
 
 def setup():
     size(width, height)
+    no_loop()
 
 
-def draw():
+def my_draw():
     # Clean Canvas
     background(0)
 
-    # Draw Pipes
+    # Move and draw Pipes
     passed_pipe = track.draw()
 
     # Draw Bird
@@ -80,7 +81,8 @@ def key_pressed():
 
 
 def mouse_pressed():
-    loop()
+    my_draw()
+    redraw()
 
 
 if __name__ == '__main__':

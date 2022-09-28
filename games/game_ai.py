@@ -1,5 +1,7 @@
 # Processing
+import p5
 from p5 import *
+from vispy import app
 
 # Models
 from flappy_bird.artificial_intelligence.bird_agent import BirdAgent
@@ -9,8 +11,12 @@ from flappy_bird.models.track import PipeTrack
 import numpy as np
 import logging
 from os import getcwd
-from os.path import join, split
+from os.path import join, split, dirname
 from datetime import datetime
+from threading import Thread
+
+# AI
+import neat
 
 
 # Initializing constants
@@ -19,7 +25,8 @@ height = 500
 
 # Initializing simulation constants
 population = 150
-generation = 1
+generation = 0
+max_generations = 30
 
 # Initializing Bird constants
 bird_starting_position = np.array([width//4, height//16])
@@ -45,54 +52,33 @@ track = PipeTrack(
 
 
 # Initializing Birds
-def create_agent():
+def create_agent(genome, neural_network):
     return BirdAgent(
         starting_position=bird_starting_position,
         bird_diameter=bird_diameter,
         max_height=height,
         total_pipes=number_pipes,
-        closest_pipe=track.pipes_queue[0]
+        closest_pipe=track.pipes_queue[0],
+        genome=genome,
+        neural_network=neural_network
     )
 
-
-birds = np.empty(population)
-birds.fill(0)
-birds = np.array(
-    list(map(
-        lambda x: create_agent(),
-        birds
-    )),
-    dtype=BirdAgent
-)
-
-# Initializing game variables and constants
-track_complete = False
+birds = None
 
 
-def log_stats(fittest_bird):
-    # Creating message to log
-    message = "\n---END OF GENERATION {}---\n".format(generation)
-    message += "Population: {}\n".format(population)
-    message += "Fittest Score: {}\n".format(fittest_bird.distance)
-    message += "Fittest Pipes passed: {}\n".format(fittest_bird.pipes_passed)
-    message += "Track {:.2f}% completed".format(100 * fittest_bird.pipes_passed / number_pipes)
-
-    # Logging
-    logging.info(
-        msg=message
-    )
 
 
 def setup():
     # Setting up canvas
     size(width, height)
+    loop()
 
     # Setting up logger filename
-    today_date = datetime.today().strftime('%Y_%m_%d-%H:%M')
+    today_date = datetime.today().strftime('%Y_%m_%d-%H_%M')
 
     # Setting up logger
     logging.basicConfig(
-        filename='training_log_neat-{}.log'.format(today_date),
+        filename='training_log_neat_{}.log'.format(today_date),
         filemode='w',
         level=logging.INFO,
         format='\n%(asctime)s-%(levelname)s> %(message)s',
@@ -130,25 +116,20 @@ def draw():
     )
 
     if np.sum(game_overs) == 0:
-        # TODO: Sort birds by distance
-        fittest_bird = birds[0]
+        # First: Sort birds by distance
+        sorted_birds = np.array(sorted(birds))
+        fittest_bird = sorted_birds[0]
 
-        # Log Stats
+        # Second: Log Stats
         log_stats(fittest_bird=fittest_bird)
 
-        # TODO: Perform selection
-
-        # TODO: Perform crossover
-
-        # TODO: Perform Mutation
-
-        # Increase evolutionary variables
-        generation += 1
-
-        # Reset simulation
+        # Third: Reset track simulation
         track.reset()
-        for bird in birds:
-            bird.reset(closest_pipe=track.pipes_queue[0])
+
+        # Fourth: Quit simulation
+        # for bird in birds:
+        #     bird.reset(closest_pipe=track.pipes_queue[0])
+        exit()
 
 
 # def key_pressed():
@@ -162,5 +143,84 @@ def mouse_pressed():
     loop()
 
 
+def run_simulation(genomes, config):
+    global generation
+    global birds
+
+    # Update simulation variables
+    generation += 1
+
+    # Create population
+    new_generation = []
+    for genome_id, genome in genomes:
+        # Setting fitness to 0
+        genome.fitness = 0
+
+        # Creating bird
+        brain = neat.nn.FeedForwardNetwork.create(genome, config)
+        bird = create_agent(
+            genome=genome,
+            neural_network=brain
+        )
+
+        # Appending bird to generation
+        new_generation.append(bird)
+
+    # Casting to numpy array
+    birds = np.array(
+        new_generation,
+        dtype=BirdAgent
+    )
+
+    # Run the simulation
+    run(
+        sketch_setup=setup,
+        sketch_draw=draw,
+
+    )
+
+
+def thread_simulation(genomes, config):
+    # Setting up thread
+    thread_sim = Thread(
+                target=run_simulation,
+                args=(genomes, config)
+            )
+
+    # Start thread
+    thread_sim.start()
+
+    # Wait for process to finish
+    thread_sim.join()
+
+
+def neat_setup(config_path):
+    # Parsing configuration file
+    config = neat.config.Config(
+        neat.DefaultGenome, neat.DefaultReproduction,
+        neat.DefaultSpeciesSet, neat.DefaultStagnation,
+        config_path
+    )
+
+    # Creating population
+    p = neat.Population(config)
+
+    # Adding statistics and logging capabilities
+    p.add_reporter(neat.StdOutReporter(True))
+    p.add_reporter(neat.StatisticsReporter())
+    p.add_reporter(neat.Checkpointer(10))
+
+    # Run for up to 50 generations.
+    winner = p.run(thread_simulation, max_generations)
+
+    # show final stats
+    print('\nBest genome:\n{!s}'.format(winner))
+
+
 if __name__ == '__main__':
-    run()
+    # Obtaining the path of the configuration file
+    local_dir = dirname(__file__)
+    config_path = join(local_dir, '../artificial_intelligence/config-feedforward.txt')
+
+    # Calling neat_setup
+    neat_setup(config_path)
