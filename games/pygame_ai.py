@@ -7,7 +7,6 @@ from pygame import QUIT, quit
 # Models
 from flappy_bird.models.floor import GameFloor
 from flappy_bird.artificial_intelligence.bird_agent import BirdAgent
-from flappy_bird.models.pipe import DualPipePygame
 from flappy_bird.models.track import PipeTrackPygame
 
 # Utils
@@ -25,7 +24,6 @@ window_dimensions = np.array([500, 800])
 floor_height = 700
 
 # Initializing simulation constants
-population = 20
 generation = 0
 max_generations = 50
 
@@ -48,15 +46,6 @@ pipe_distance = pipe_width * 3.5
 pipe_velocity = np.array([2, 0])
 number_pipes = 50
 
-dummy_dual_pipe = DualPipePygame(
-    pipe_id=0,
-    starting_x=window_dimensions[0],
-    pipes_y=np.array([
-        -DualPipePygame.PIPE_HEIGHT + window_dimensions[1]//4,
-        window_dimensions[1]//4 + window_dimensions[1]//4
-    ]),
-)
-
 
 # Initializing Birds
 def create_agent(bird_id, genome, neural_network, closest_pipe):
@@ -72,18 +61,9 @@ def create_agent(bird_id, genome, neural_network, closest_pipe):
     )
 
 
-dummy_bird = create_agent(
-    bird_id=-1,
-    genome=0,
-    neural_network=0,
-    closest_pipe=dummy_dual_pipe
-)
-
-
 def log_stats(fittest_bird):
     # Creating message to log
     message = "\n---END OF GENERATION {}---\n".format(generation)
-    message += "Population: {}\n".format(population)
     message += "Fittest Score: {}\n".format(fittest_bird.genome.fitness)
     message += "Fittest Pipes passed: {}\n".format(fittest_bird.pipes_passed)
     message += "Track {:.2f}% completed".format(100 * fittest_bird.pipes_passed / number_pipes)
@@ -109,24 +89,9 @@ def play(game_track, birds_population):
 
         # Second: Updating and drawing pipes
         passed_pipe = game_track.draw(game_window=GAME_WINDOW)
-        # dummy_dual_pipe.translate(pipe_velocity=pipe_velocity)
-        # dummy_dual_pipe.draw(game_window=GAME_WINDOW)
 
         # Third: Drawing Floor
         GAME_FLOOR.draw(game_window=GAME_WINDOW)
-
-        # dummy_bird.think_and_do_something()
-        # dummy_bird.draw_pygame(game_window=GAME_WINDOW)
-        #
-        # update()
-        #
-        # if dummy_bird.game_over:
-        #     dummy_dual_pipe.top_pipe.position[0] = window_dimensions[0]
-        #     dummy_dual_pipe.bottom_pipe.position[0] = window_dimensions[0]
-        #     dummy_bird.reset(closest_pipe=dummy_dual_pipe)
-        #     print("reset")
-
-        # ---------------
 
         # Fourth: Perform Bird Action, increase score and Draw
         game_overs = 0
@@ -219,4 +184,3 @@ if __name__ == '__main__':
 
     # Calling neat_setup
     neat_setup(simulation=simulation, max_generations=max_generations)
-    # play()
