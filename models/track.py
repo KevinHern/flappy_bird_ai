@@ -129,7 +129,7 @@ class PipeTrackPygame:
         # Initializing constants
         self.game_window_dimensions = game_dimensions
 
-        self.pipe_distance = ceil((pipe_distance + DualPipePygame.PIPE_WIDTH) * 1.0)
+        self.pipe_distance = ceil((pipe_distance + DualPipePygame.PIPE_WIDTH) * 1.05)
         self.pipe_velocity = pipe_velocity
         self.number_pipes = number_pipes
         self.pipes_gap = 5 * self.game_window_dimensions[1] // 16

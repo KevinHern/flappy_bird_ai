@@ -36,7 +36,7 @@ bird_diameter = 35
 pipe_width = 50
 pipe_distance = pipe_width * 3.5
 pipe_velocity = np.array([-2, 0])
-number_pipes = 2
+number_pipes = 1
 
 # Initializing Pipes
 track = PipeTrack(
