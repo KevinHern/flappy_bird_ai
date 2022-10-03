@@ -2,13 +2,12 @@
 from pygame.mask import from_surface
 
 # Models
-from flappy_bird.models.bird import Bird
-from flappy_bird.models.pipe import DualPipePygame
+from flappy_bird_ai.flappy_bird.models.bird import Bird
+from flappy_bird_ai.flappy_bird.models.pipe import DualPipePygame
 
 # utils
-from flappy_bird.utils.constants import GameImages
+from flappy_bird_ai.flappy_bird.utils.constants import GameImages
 import numpy as np
-from random import choice
 from math import ceil
 
 

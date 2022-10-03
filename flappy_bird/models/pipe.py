@@ -3,12 +3,11 @@ from p5 import *
 
 # Pygame
 from pygame.transform import flip
-from pygame.mask import from_surface
 
 # Utils
 import numpy as np
-from flappy_bird.utils.constants import PipeOrientation
-from flappy_bird.utils.constants import GameImages
+from flappy_bird_ai.flappy_bird.utils.constants import PipeOrientation
+from flappy_bird_ai.flappy_bird.utils.constants import GameImages
 
 
 class Pipe:

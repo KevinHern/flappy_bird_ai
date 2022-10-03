@@ -5,18 +5,16 @@ from pygame.event import get
 from pygame import QUIT, quit
 
 # Models
-from flappy_bird.models.floor import GameFloor
-from flappy_bird.artificial_intelligence.bird_agent import BirdAgent
-from flappy_bird.models.track import PipeTrackPygame
+from flappy_bird_ai.flappy_bird.models.floor import GameFloor
+from flappy_bird_ai.flappy_bird.artificial_intelligence.bird_agent import BirdAgent
+from flappy_bird_ai.flappy_bird.models.track import PipeTrackPygame
 
 # Utils
-import logging
-from datetime import datetime
-from flappy_bird.utils.constants import GameImages
+from flappy_bird_ai.flappy_bird.utils.constants import GameImages
 
 # AI
 from neat.nn import FeedForwardNetwork
-from flappy_bird.artificial_intelligence.neat_setup import NeatSetup
+from flappy_bird_ai.flappy_bird.artificial_intelligence.neat_setup import NeatSetup
 
 
 class FlappyBirdAI:

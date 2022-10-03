@@ -1,5 +1,5 @@
 # Models
-from flappy_bird.models.pipe import DualPipe, DualPipePygame
+from flappy_bird_ai.flappy_bird.models.pipe import DualPipe, DualPipePygame
 
 # Utils
 import numpy as np

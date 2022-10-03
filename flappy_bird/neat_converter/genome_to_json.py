@@ -1,12 +1,11 @@
 import numpy as np
 
 # Models
-from flappy_bird.neat_converter.models.connection import GenomeConnection
-from flappy_bird.neat_converter.models.node import GenomeNode
+from flappy_bird_ai.flappy_bird.neat_converter.models.connection import GenomeConnection
+from flappy_bird_ai.flappy_bird.neat_converter.models.node import GenomeNode
 
 # Utils
 import json
-from os.path import join, dirname
 
 
 def get_network_metadata(config):

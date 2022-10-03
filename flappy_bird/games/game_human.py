@@ -2,8 +2,8 @@
 from p5 import *
 
 # Models
-from flappy_bird.models.bird import Bird
-from flappy_bird.models.track import PipeTrack
+from flappy_bird_ai.flappy_bird.models.bird import Bird
+from flappy_bird_ai.flappy_bird.models.track import PipeTrack
 
 # Utils
 import numpy as np
