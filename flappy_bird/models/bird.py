@@ -1,6 +1,3 @@
-# Processing
-from p5 import *
-
 # Utils
 import numpy as np
 
@@ -101,10 +98,6 @@ class Bird:
 
             # Increase distance score
             self.increase_score()
-
-    def draw(self):
-        # Draw
-        circle(self.position[0], self.position[1], self.bird_diameter)
 
     def reset(self, closest_pipe):
         # Resetting vectors

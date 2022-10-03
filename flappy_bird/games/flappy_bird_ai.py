@@ -7,7 +7,7 @@ from pygame import QUIT, quit
 # Models
 from flappy_bird_ai.flappy_bird.models.floor import GameFloor
 from flappy_bird_ai.flappy_bird.artificial_intelligence.bird_agent import BirdAgent
-from flappy_bird_ai.flappy_bird.models.track import PipeTrackPygame
+from flappy_bird_ai.flappy_bird.models.track import PipeTrack
 
 # Utils
 from flappy_bird_ai.flappy_bird.utils.constants import GameImages
@@ -112,7 +112,7 @@ class FlappyBirdAI:
         self.generation += 1
 
         # Create track
-        track = PipeTrackPygame(
+        track = PipeTrack(
             pipe_distance=self.pipe_distance,
             pipe_velocity=self.pipe_velocity,
             number_pipes=self.number_pipes,

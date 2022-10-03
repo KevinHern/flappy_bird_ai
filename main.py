@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # Setting up NEAT Algorithm
     neatSetup = NeatSetup(
         simulation=game.simulation,
-        max_generations=15,
+        max_generations=2,
         neat_checkpoint=11,
         load_checkpoint_number=10
     )

@@ -15,6 +15,7 @@ class NeatSetup:
     CHECKPOINT_PATH = join(dirname(dirname(__file__)), 'checkpoints')
     NEAT_CHECKPOINT_FILE_PREFIX = "neat-checkpoint"
     GAMES_DIRECTORY = join(dirname(dirname(__file__)), 'games')
+    MAIN_PY_DIRECTORY = dirname(dirname(dirname(__file__)))
 
     def __init__(self, simulation, max_generations, neat_checkpoint, load_checkpoint_number=None):
         # Initializing parameters for simulations
@@ -51,10 +52,10 @@ class NeatSetup:
     @staticmethod
     def _move_checkpoints():
         # Moving checkpoint files
-        for file in listdir(NeatSetup.GAMES_DIRECTORY):
+        for file in listdir(NeatSetup.MAIN_PY_DIRECTORY):
             if file.startswith(NeatSetup.NEAT_CHECKPOINT_FILE_PREFIX):
                 shutil.move(
-                    src=join(NeatSetup.GAMES_DIRECTORY, file),
+                    src=join(NeatSetup.MAIN_PY_DIRECTORY, file),
                     dst=join(NeatSetup.CHECKPOINT_PATH, file)
                 )
 

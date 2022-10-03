@@ -3,7 +3,7 @@ from pygame.mask import from_surface
 
 # Models
 from flappy_bird_ai.flappy_bird.models.bird import Bird
-from flappy_bird_ai.flappy_bird.models.pipe import DualPipePygame
+from flappy_bird_ai.flappy_bird.models.pipe import DualPipe
 
 # utils
 from flappy_bird_ai.flappy_bird.utils.constants import GameImages
@@ -94,8 +94,8 @@ class BirdAgent(Bird):
     def check_collision_pygame(self):
         # Masks
         bird_mask = from_surface(BirdAgent.ANIMATION[0])
-        top_pipe_mask = from_surface(DualPipePygame.TOP_PIPE)
-        bottom_pipe_mask = from_surface(DualPipePygame.BOTTOM_PIPE)
+        top_pipe_mask = from_surface(DualPipe.TOP_PIPE)
+        bottom_pipe_mask = from_surface(DualPipe.BOTTOM_PIPE)
 
         # Calculating offsets
         top_pipe_offset = np.subtract(self.closest_pipe.top_pipe.position, self.position)
