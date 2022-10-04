@@ -1,6 +1,6 @@
 # Utils
 import numpy as np
-from flappy_bird_ai.flappy_bird.utils.constants import GameImages
+from flappy_bird.utils.constants import GameImages
 
 
 class GameFloor:

@@ -1,6 +1,6 @@
 # AI
-from flappy_bird_ai.flappy_bird.games.flappy_bird_ai import FlappyBirdAI
-from flappy_bird_ai.flappy_bird.artificial_intelligence.neat_setup import NeatSetup
+from flappy_bird.games.flappy_bird_ai import FlappyBirdAI
+from flappy_bird.artificial_intelligence.neat_setup import NeatSetup
 
 
 if __name__ == '__main__':
