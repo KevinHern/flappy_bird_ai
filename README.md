@@ -33,3 +33,5 @@ Each new generation, the Neural Network parameters can be modified by making the
 If you wish to test the artificial intelligence, feel free to use **GitPod.io** to run the project.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/KevinHern/flappy_bird_ai)
+
+Also, if you want to visualize how the neural network evolves as generations go on, make sure to constantly check the **growth** directory (it will automatically create itself). 
