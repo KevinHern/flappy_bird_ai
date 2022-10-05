@@ -167,3 +167,6 @@ class FlappyBirdAI:
             show_disabled=True,
             fmt='svg'
         )
+
+        # Moving SVGs
+        NeatSetup.move_svg_visualization()

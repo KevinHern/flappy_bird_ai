@@ -157,9 +157,6 @@ class NeatSetup:
         else:
             self._restore_population_checkpoint()
 
-        # Moving SVGs
-        NeatSetup.move_svg_visualization()
-
         # Moving checkpoints
         NeatSetup.move_checkpoints()
 
