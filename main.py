@@ -24,7 +24,7 @@ if __name__ == '__main__':
     '''
     neatSetup = NeatSetup(
         simulation=game.simulation,
-        max_generations=50,
+        max_generations=2,
         neat_checkpoint=11,
         load_checkpoint_number=None,
         #load_checkpoint_number=10

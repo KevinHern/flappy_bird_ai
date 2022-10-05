@@ -2,6 +2,7 @@
 import neat
 
 # utils
+from flappy_bird.utils.visualize import draw_net
 import shutil
 from os.path import join, dirname, exists
 from os import mkdir, listdir
@@ -13,9 +14,13 @@ class NeatSetup:
     CONFIG_PATH = join(dirname(dirname(__file__)), 'artificial_intelligence', 'config-feedforward.txt')
     LOG_PATH = join(dirname(dirname(__file__)), 'logs')
     CHECKPOINT_PATH = join(dirname(dirname(__file__)), 'checkpoints')
-    NEAT_CHECKPOINT_FILE_PREFIX = "neat-checkpoint"
     GAMES_DIRECTORY = join(dirname(dirname(__file__)), 'games')
+
+    NEAT_CHECKPOINT_FILE_PREFIX = "neat-checkpoint"
+    VISUALIZATION_FILE_PREFIX = "best_bird"
+
     MAIN_PY_DIRECTORY = dirname(dirname(dirname(__file__)))
+    SVG_PATH = join(dirname(dirname(dirname(__file__))), 'growth')
 
     def __init__(self, simulation, max_generations, neat_checkpoint, load_checkpoint_number=None):
         # Initializing parameters for simulations
@@ -35,6 +40,10 @@ class NeatSetup:
         if not exists(NeatSetup.CHECKPOINT_PATH):
             mkdir(NeatSetup.CHECKPOINT_PATH)
 
+        # Create SVG directory if it doesn't exist
+        if not exists(NeatSetup.SVG_PATH):
+            mkdir(NeatSetup.SVG_PATH)
+
         # Create logs directory if it doesn't exist
         if not exists(NeatSetup.LOG_PATH):
             mkdir(NeatSetup.LOG_PATH)
@@ -50,13 +59,23 @@ class NeatSetup:
         )
 
     @staticmethod
-    def _move_checkpoints():
+    def move_checkpoints():
         # Moving checkpoint files
         for file in listdir(NeatSetup.MAIN_PY_DIRECTORY):
             if file.startswith(NeatSetup.NEAT_CHECKPOINT_FILE_PREFIX):
                 shutil.move(
                     src=join(NeatSetup.MAIN_PY_DIRECTORY, file),
                     dst=join(NeatSetup.CHECKPOINT_PATH, file)
+                )
+
+    @staticmethod
+    def move_svg_visualization():
+        # Moving SVGs
+        for file in listdir(NeatSetup.MAIN_PY_DIRECTORY):
+            if file.startswith(NeatSetup.VISUALIZATION_FILE_PREFIX):
+                shutil.move(
+                    src=join(NeatSetup.MAIN_PY_DIRECTORY, file),
+                    dst=join(NeatSetup.SVG_PATH, file)
                 )
 
     def _neat_setup(self):
@@ -74,8 +93,15 @@ class NeatSetup:
         # Show stats of the best Genome
         print('\nBest genome:\n{!s}'.format(winner))
 
-        # Moving checkpoints
-        NeatSetup._move_checkpoints()
+        # Visualize best bird
+        draw_net(
+            config=self.config_file,
+            genome=winner,
+            view=True,
+            filename=NeatSetup.VISUALIZATION_FILE_PREFIX + "_fittest",
+            show_disabled=True,
+            fmt='svg'
+        )
 
     def _restore_population_checkpoint(self):
         # Obtaining the path of the checkpoint
@@ -98,8 +124,15 @@ class NeatSetup:
         # Show stats of the best Genome
         print('\nBest genome:\n{!s}'.format(winner))
 
-        # Moving checkpoints
-        NeatSetup._move_checkpoints()
+        # Visualize best bird
+        draw_net(
+            config=self.config_file,
+            genome=winner,
+            view=True,
+            filename=NeatSetup.VISUALIZATION_FILE_PREFIX + "_fittest",
+            show_disabled=True,
+            fmt='svg'
+        )
 
         # # Save Neural Network
         # local_dir = dirname(dirname(__file__))
@@ -123,6 +156,12 @@ class NeatSetup:
             self._neat_setup()
         else:
             self._restore_population_checkpoint()
+
+        # Moving SVGs
+        NeatSetup.move_svg_visualization()
+
+        # Moving checkpoints
+        NeatSetup.move_checkpoints()
 
     @staticmethod
     def log_stats(winner_genome):

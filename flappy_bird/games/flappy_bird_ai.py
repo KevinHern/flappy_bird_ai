@@ -11,6 +11,7 @@ from flappy_bird.models.track import PipeTrack
 
 # Utils
 from flappy_bird.utils.constants import GameImages
+from flappy_bird.utils.visualize import draw_net
 
 # AI
 from neat.nn import FeedForwardNetwork
@@ -149,4 +150,20 @@ class FlappyBirdAI:
         self.play(
             game_track=track,
             birds_population=birds
+        )
+
+        # Sort all the birds based on their genome
+        birds = np.array(
+            sorted(list(birds)),
+            dtype=BirdAgent
+        )
+
+        # Visualize best bird
+        draw_net(
+            config=config,
+            genome=birds[0].genome,
+            view=True,
+            filename="best_bird_" + str(self.generation),
+            show_disabled=True,
+            fmt='svg'
         )
