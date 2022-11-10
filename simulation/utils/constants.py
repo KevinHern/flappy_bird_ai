@@ -25,6 +25,3 @@ class GameImages:
     PIPE = scale2x(load(join(get_assets_directory(), "pipe.png")))
     FLOOR = scale2x(load(join(get_assets_directory(), "floor.png")))
     BACKGROUND = scale2x(load(join(get_assets_directory(), "background.png")))
-
-
-print(GameImages.BIRD_ANIMATION)
