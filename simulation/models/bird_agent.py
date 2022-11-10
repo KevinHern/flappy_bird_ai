@@ -2,11 +2,11 @@
 from pygame.mask import from_surface
 
 # Models
-from flappy_bird.models.bird import Bird
-from flappy_bird.models.pipe import DualPipe
+from .bird import Bird
+from .pipe import DualPipe
 
 # utils
-from flappy_bird.utils.constants import GameImages
+from ..utils.constants import GameImages
 import numpy as np
 from math import ceil
 
@@ -56,6 +56,12 @@ class BirdAgent(Bird):
     def __lt__(self, other):
         return self.genome.fitness > other.genome.fitness
 
+    @staticmethod
+    def log_stats(agent):
+        message = "Pipes Passed: {}\n".format(agent.pipes_passed)
+        message += "Percentage Completed: {:.2f}%\n".format(100 * agent.pipes_passed / agent.total_pipes)
+        return message
+
     def think(self):
         # Extract inputs
         inputs = (
@@ -77,7 +83,6 @@ class BirdAgent(Bird):
             return True
         else:
             return False
-        # return False
 
     def think_and_do_something(self):
         # Think first

@@ -5,7 +5,7 @@ ports:
   - port: 6080
     onOpen: open-preview
 tasks:
-  - init: pip3 install -r requirements.txt
+  - init: pip install git+https://github.com/KevinHern/neat-python-utility && pip3 install -r requirements.txt
     command: python3 main.py
 github:
   prebuilds:

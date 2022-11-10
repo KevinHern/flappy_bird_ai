@@ -5,17 +5,15 @@ from pygame.event import get
 from pygame import QUIT, quit
 
 # Models
-from flappy_bird.models.floor import GameFloor
-from flappy_bird.artificial_intelligence.bird_agent import BirdAgent
-from flappy_bird.models.track import PipeTrack
+from .models.floor import GameFloor
+from .models.bird_agent import BirdAgent
+from .models.track import PipeTrack
 
 # Utils
-from flappy_bird.utils.constants import GameImages
-from flappy_bird.utils.visualize import draw_net
+from .utils.constants import GameImages
 
 # AI
 from neat.nn import FeedForwardNetwork
-from flappy_bird.artificial_intelligence.neat_setup import NeatSetup
 
 
 class FlappyBirdAI:
@@ -60,7 +58,7 @@ class FlappyBirdAI:
         )
 
     # Game itself
-    def play(self, game_track, birds_population):
+    def run(self, game_track, birds_population):
         # Create a copy
         this_generation = birds_population.copy()
         while True:
@@ -98,13 +96,6 @@ class FlappyBirdAI:
 
             # Sixth: Determine if all birds game over
             if game_overs == 0:
-                # First: Sort birds by distance
-                sorted_birds = np.array(sorted(this_generation))
-                fittest_bird = sorted_birds[0]
-
-                # Second: Log Stats
-                NeatSetup.log_stats(winner_genome=fittest_bird)
-
                 break
 
     # Setting up simulation
@@ -147,7 +138,7 @@ class FlappyBirdAI:
         )
 
         # Run the simulation
-        self.play(
+        self.run(
             game_track=track,
             birds_population=birds
         )
@@ -158,15 +149,5 @@ class FlappyBirdAI:
             dtype=BirdAgent
         )
 
-        # Visualize best bird
-        draw_net(
-            config=config,
-            genome=birds[0].genome,
-            view=True,
-            filename="best_bird_" + str(self.generation),
-            show_disabled=True,
-            fmt='svg'
-        )
-
-        # Moving SVGs
-        NeatSetup.move_svg_visualization()
+        # Return current generation and fittest
+        return self.generation, birds[0]

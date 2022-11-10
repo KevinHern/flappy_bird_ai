@@ -1,0 +1,63 @@
+{
+    "inputs": [
+        "Bird's Y position (-1)",
+        "Closest Pipe's farthest corner's X position (-2)",
+        "Top pipe's height (-3)",
+        "Bottom pipe's height (-4)"
+    ],
+    "outputs": [
+        "Flap (0)"
+    ],
+    "layers": [
+        {
+            "layer": 0,
+            "id_node_inputs": [
+                -3,
+                -4
+            ],
+            "id_nodes": [
+                10
+            ],
+            "weights": [
+                [
+                    2.4547546587502107,
+                    1.4648256657301981
+                ]
+            ],
+            "biases": [
+                0.21166095020693754
+            ],
+            "afunctions": [
+                "tanh"
+            ]
+        },
+        {
+            "layer": 1,
+            "id_node_inputs": [
+                -1,
+                -2,
+                -3,
+                -4,
+                10
+            ],
+            "id_nodes": [
+                0
+            ],
+            "weights": [
+                [
+                    1.3925636240451666,
+                    -0.37586924051807713,
+                    -0.16094378815292967,
+                    -1.117142989693358,
+                    2.0090186193872044
+                ]
+            ],
+            "biases": [
+                0.26032037667117364
+            ],
+            "afunctions": [
+                "tanh"
+            ]
+        }
+    ]
+}
