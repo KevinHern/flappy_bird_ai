@@ -1,6 +1,7 @@
 # AI
-from flappy_bird.games.flappy_bird_ai import FlappyBirdAI
-from flappy_bird.artificial_intelligence.neat_setup import NeatSetup
+from simulation.flappy_bird_ai import FlappyBirdAI
+from simulation.models.bird_agent import BirdAgent
+from neat_utility import NeatSetup
 
 
 if __name__ == '__main__':
@@ -22,13 +23,23 @@ if __name__ == '__main__':
             * None: Start from a fresh generation
             * Integer: Either 10 or 49
     '''
+
     neatSetup = NeatSetup(
-        simulation=game.simulation,
         max_generations=50,
-        neat_checkpoint=11,
+        neat_checkpoint_breakpoint=10,
+        file_prefix="flappy_bird",
+        simulation_file=__file__,
+        is_feedforward_network=True,
+        inputs_name=["Bird's Y position", "Closest Pipe's farthest corner's X position", "Top pipe's height", "Bottom pipe's height"],
+        outputs_name=["Flap"],
+
         load_checkpoint_number=None,
-        #load_checkpoint_number=10
+        # load_checkpoint_number=10
+        config_file=None,
+        simulation=game.simulation,
+
+        logging_function=BirdAgent.log_stats
     )
 
     # Run
-    neatSetup.start_simulation()
+    neatSetup.run_simulation()
