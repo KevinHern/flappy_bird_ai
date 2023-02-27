@@ -28,10 +28,36 @@ Then, all the birds (called 'generation') are subjected to run in the game and t
 NEAT is the hybrid between Neural Networks and Genetic Algorithms mashed together.
 Each new generation, the Neural Network parameters can be modified by making the net more complex.
 
-# Run
+# How to run
+
+## Run in Cloud
 
 If you wish to test the artificial intelligence, feel free to use **GitPod.io** to run the project.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/KevinHern/flappy_bird_ai)
+
+The **biggest flaw** of this is the delay that is present when the UI updates; that means, in the server everything will go smoothly but in your browser, you might see some frames freeze as the UI updates. 
+
+## Run Locally 
+
+### Requirements
+
+- Python 3.7 or higher
+
+### Process
+
+1. Clone this repository
+2. Enter into the main directory
+3. Install the graphviz, custom neat package and the packages found in the requirements.txt
+
+```bat
+sudo apt-get install graphviz && pip install git+https://github.com/KevinHern/neat-python-utility && pip3 install -r requirements.txt
+```
+
+4. Execute main program and adjust parameters **(read main.py)**
+
+```bat
+python3 main.py
+```
 
 Also, if you want to visualize how the neural network evolves as generations go on, make sure to constantly check the **growth** directory (it will automatically create itself). 
